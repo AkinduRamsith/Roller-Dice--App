@@ -13,37 +13,60 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-late TextEditingController controller1;
+  late TextEditingController controller1;
   late TextEditingController _controller2;
-String? playerOne;
-String? playerTwo;
+  String? playerOne;
+  String? playerTwo;
+  String? playerOneErrorText;
+  String? playerTwoErrorText;
   @override
   void initState() {
     super.initState();
     controller1 = TextEditingController();
     _controller2 = TextEditingController();
   }
+
   void newGame() {
-    playerOne=controller1.text;
-    playerTwo=_controller2.text;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => GradientContainer(colors: const [
+    setState(() {
+      playerOneErrorText=_validateName(controller1.text);
+      playerTwoErrorText=_validateName(_controller2.text);
+
+  if (playerOneErrorText==null && playerTwoErrorText==null) {
+  playerOne = controller1.text;
+  playerTwo = _controller2.text;
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => GradientContainer(
+        colors: const [
           Color.fromARGB(255, 203, 180, 9),
           Color.fromARGB(255, 78, 68, 6),
-        ],playerOne: playerOne,playerTwo: playerTwo,),
+        ],
+        playerOne: playerOne,
+        playerTwo: playerTwo,
+        onMainMenuPressed: () {
+                
+                controller1.clear();
+                _controller2.clear();
+                setState(() {
+                  playerOneErrorText = null;
+                  playerTwoErrorText = null;
+                });
+              },
       ),
-    );
+    ),
+  );
+}
+});
   }
 
-String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter a password';
-    } 
+  String? _validateName(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Please enter a your name';
+    }
     return null;
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,31 +75,30 @@ String? _validatePassword(String? value) {
         const SizedBox(
           height: 150,
         ),
-         SizedBox(
+        SizedBox(
           width: 250,
           child: TextField(
-            
             obscureText: false,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
+            decoration:  InputDecoration(
+              border: const OutlineInputBorder(),
               labelText: 'Player One Name',
-              
+              errorText: playerOneErrorText,
             ),
-           controller: controller1,
-             
+            controller: controller1,
           ),
         ),
         const SizedBox(
           height: 15,
         ),
-          SizedBox(
+        SizedBox(
           width: 250,
           child: TextField(
-             controller: _controller2,
+            controller: _controller2,
             obscureText: false,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
+            decoration:  InputDecoration(
+              border: const OutlineInputBorder(),
               labelText: 'Player Two Name',
+              errorText: playerTwoErrorText,
             ),
           ),
         ),
@@ -86,7 +108,7 @@ String? _validatePassword(String? value) {
         FilledButton(
           onPressed: newGame,
           style: FilledButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 219, 114, 8),
+            backgroundColor: const Color.fromARGB(255, 219, 114, 8),
             foregroundColor: Colors.white,
             textStyle:
                 const TextStyle(fontSize: 28, fontStyle: FontStyle.italic),

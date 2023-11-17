@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class RollerDice extends StatefulWidget {
-    RollerDice({Key? key, this.playerOneName, this.playerTwoName}) : super(key: key);
+    RollerDice({Key? key, this.playerOneName, this.playerTwoName,required this.onMainMenuPressed,}) : super(key: key);
 String? playerOneName;
  String? playerTwoName;
+  final VoidCallback onMainMenuPressed;
   @override
   State<RollerDice> createState() => _RollerDiceState();
 }
@@ -70,6 +71,7 @@ class _RollerDiceState extends State<RollerDice> {
             actions: [
               TextButton(
                 onPressed: () {
+                  widget.onMainMenuPressed();
                   navigateToMainMenu();
                 },
                 child: const Text('Main Menu'),

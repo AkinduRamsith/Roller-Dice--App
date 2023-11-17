@@ -6,10 +6,11 @@ import 'package:roller_dice_app/roller_dicer.dart';
 
 // ignore: must_be_immutable
 class GradientContainer extends StatelessWidget {
-  GradientContainer({super.key, required this.colors,this.playerOne, this.playerTwo});
+  GradientContainer({super.key, required this.colors,this.playerOne, this.playerTwo ,required this.onMainMenuPressed,});
   final List<Color> colors;
  String? playerOne;
  String? playerTwo;
+  final VoidCallback onMainMenuPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class GradientContainer extends StatelessWidget {
             colors: colors,
           ),
         ),
-        child: Center(child: RollerDice(playerOneName: playerOne,playerTwoName: playerTwo,)),
+        child: Center(child: RollerDice(playerOneName: playerOne,playerTwoName: playerTwo,onMainMenuPressed: onMainMenuPressed,)),
       ),
     );
   }
