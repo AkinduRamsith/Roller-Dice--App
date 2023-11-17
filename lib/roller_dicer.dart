@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class RollerDice extends StatefulWidget {
-  const RollerDice({super.key});
-
+    RollerDice({Key? key, this.playerOneName, this.playerTwoName}) : super(key: key);
+String? playerOneName;
+ String? playerTwoName;
   @override
   State<RollerDice> createState() => _RollerDiceState();
 }
@@ -52,12 +54,12 @@ class _RollerDiceState extends State<RollerDice> {
       String winnerMessage;
 
       if (totalPlayerOneDiceValue > totalPlayerTwoDiceValue) {
-        winnerMessage = 'Player One Wins! \n\tDo you want to play again?';
-      } else if (totalPlayerOneDiceValue < totalPlayerTwoDiceValue) {
-        winnerMessage = 'Player Two Wins! \n\tDo you want to play again?';
-      } else {
-        winnerMessage = 'It\'s a Tie! \n\tDo you want to play again?';
-      }
+  winnerMessage = '${widget.playerOneName} Wins! \n\tDo you want to play again?';
+} else if (totalPlayerOneDiceValue < totalPlayerTwoDiceValue) {
+  winnerMessage = '${widget.playerTwoName} Wins! \n\tDo you want to play again?';
+} else {
+  winnerMessage = 'It\'s a Tie! \n\tDo you want to play again?';
+}
 
       showDialog(
         context: context,
@@ -112,41 +114,45 @@ class _RollerDiceState extends State<RollerDice> {
           width: 200,
         ),
         const SizedBox(
-          height: 20,
+          height: 70,
         ),
-        Row(
+         Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
-              width: 40,
-            ),
             playerOneButton = TextButton(
-                onPressed: isPlayerOneButtonDisabled
-                    ? null
-                    : () {
-                        roll1();
-                      },
-                style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 219, 114, 8),
-                    foregroundColor: Colors.white,
-                    textStyle: const TextStyle(fontSize: 28)),
-                child: const Text('Player One')),
+              onPressed: isPlayerOneButtonDisabled
+                  ? null
+                  : () {
+                      roll1();
+                    },
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 219, 114, 8),
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(fontSize: 28),
+              ),
+              child: Text(widget.playerOneName ?? ''),
+            ),
             const SizedBox(
               width: 20,
             ),
             playerTwoButton = TextButton(
-                onPressed: isPlayerTwoButtonDisabled
-                    ? null
-                    : () {
-                        roll2();
-                        checkGameResult();
-                      },
-                style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 219, 114, 8),
-                    foregroundColor: Colors.white,
-                    textStyle: const TextStyle(fontSize: 28)),
-                child: const Text('Player Two')),
+              onPressed: isPlayerTwoButtonDisabled
+                  ? null
+                  : () {
+                      roll2();
+                      checkGameResult();
+                    },
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 219, 114, 8),
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(fontSize: 28),
+              ),
+              child: Text(widget.playerTwoName ?? ''),
+            ),
           ],
-        )
+        ),
+      ),
       ],
     );
   }
